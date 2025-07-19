@@ -6,6 +6,15 @@ import { parseDiscordEmoji } from '../../utils/utils';
 export default async function SystemMessage({ message }: { message: Message }) {
   switch (message.type) {
     case MessageType.RecipientAdd:
+    case MessageType.RecipientRemove:
+      return (
+        <DiscordSystemMessage id={`m-${message.id}`} key={message.id} type="join">
+          <Highlight color={message.member?.roles.color?.hexColor}>
+            {message.author.displayName ?? message.author.username}
+          </Highlight>{' '}
+          {message.type === MessageType.RecipientAdd ? 'added' : 'removed'} a recipient.
+        </DiscordSystemMessage>
+      );
     case MessageType.UserJoin:
       return (
         <DiscordSystemMessage id={`m-${message.id}`} key={message.id} type="join">
